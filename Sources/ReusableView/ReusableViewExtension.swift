@@ -23,9 +23,11 @@ extension ReusableViewExtension where T: UICollectionView {
         base.register(CollectionViewCell<View>.self, forCellWithReuseIdentifier: identifier)
     }
 
-    public func dequeue<View: ReusableViewType>(_: View.Type, for indexPath: IndexPath) -> CollectionViewCell<View> {
+    public func dequeue<View: ReusableViewType>(_: View.Type, for indexPath: IndexPath, handler: ((View) -> Void)? = nil) -> CollectionViewCell<View> {
         let identifier = View.viewReuseIdentifier
-        return base.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! CollectionViewCell<View>
+        let cell = base.dequeueReusableCell(withReuseIdentifier: identifier, for: indexPath) as! CollectionViewCell<View>
+        handler?(cell.view)
+        return cell
     }
 
     public func cell<View: ReusableViewType>(_: View.Type, forItemAt indexPath: IndexPath) -> CollectionViewCell<View>? {
@@ -49,9 +51,11 @@ extension ReusableViewExtension where T: UITableView {
         base.register(TableViewCell<View>.self, forCellReuseIdentifier: identifier)
     }
 
-    public func dequeue<View: ReusableViewType>(_: View.Type, for indexPath: IndexPath) -> TableViewCell<View> {
+    public func dequeue<View: ReusableViewType>(_: View.Type, for indexPath: IndexPath, handler: ((View) -> Void)? = nil) -> TableViewCell<View> {
         let identifier = View.viewReuseIdentifier
-        return base.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! TableViewCell<View>
+        let cell = base.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! TableViewCell<View>
+        handler?(cell.view)
+        return cell
     }
 
     public func cell<View: ReusableViewType>(_: View.Type, forRowAt indexPath: IndexPath) -> TableViewCell<View>? {
